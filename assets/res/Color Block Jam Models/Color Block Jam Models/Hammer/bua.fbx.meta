@@ -1,0 +1,116 @@
+{
+  "ver": "2.3.0",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "50d6faa5-0180-4f7e-a806-a2600da6f7b7",
+  "files": [],
+  "subMetas": {
+    "0fc92": {
+      "importer": "gltf-mesh",
+      "uuid": "50d6faa5-0180-4f7e-a806-a2600da6f7b7@0fc92",
+      "displayName": "",
+      "id": "0fc92",
+      "name": "Line001.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "fb329": {
+      "importer": "gltf-mesh",
+      "uuid": "50d6faa5-0180-4f7e-a806-a2600da6f7b7@fb329",
+      "displayName": "",
+      "id": "fb329",
+      "name": "Sphere001.mesh",
+      "userData": {
+        "gltfIndex": 1
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "c6160": {
+      "importer": "gltf-mesh",
+      "uuid": "50d6faa5-0180-4f7e-a806-a2600da6f7b7@c6160",
+      "displayName": "",
+      "id": "c6160",
+      "name": "Cylinder001.mesh",
+      "userData": {
+        "gltfIndex": 2
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "c28f0": {
+      "importer": "gltf-material",
+      "uuid": "50d6faa5-0180-4f7e-a806-a2600da6f7b7@c28f0",
+      "displayName": "",
+      "id": "c28f0",
+      "name": "Material #26.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "05073": {
+      "importer": "gltf-scene",
+      "uuid": "50d6faa5-0180-4f7e-a806-a2600da6f7b7@05073",
+      "displayName": "",
+      "id": "05073",
+      "name": "bua.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": false,
+    "allowMeshDataAccess": true,
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "redirect": "50d6faa5-0180-4f7e-a806-a2600da6f7b7@05073",
+    "assetFinder": {
+      "meshes": [
+        "50d6faa5-0180-4f7e-a806-a2600da6f7b7@0fc92",
+        "50d6faa5-0180-4f7e-a806-a2600da6f7b7@fb329",
+        "50d6faa5-0180-4f7e-a806-a2600da6f7b7@c6160"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [
+        "50d6faa5-0180-4f7e-a806-a2600da6f7b7@c28f0"
+      ],
+      "scenes": [
+        "50d6faa5-0180-4f7e-a806-a2600da6f7b7@05073"
+      ]
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "ver": "2.3.0",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "cd89beba-6d8a-4889-94df-a4cc5e897512",
+  "files": [],
+  "subMetas": {
+    "d887e": {
+      "importer": "gltf-mesh",
+      "uuid": "cd89beba-6d8a-4889-94df-a4cc5e897512@d887e",
+      "displayName": "",
+      "id": "d887e",
+      "name": "maynghien 2.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "8e342": {
+      "importer": "gltf-material",
+      "uuid": "cd89beba-6d8a-4889-94df-a4cc5e897512@8e342",
+      "displayName": "",
+      "id": "8e342",
+      "name": "Material #29.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "60bc1": {
+      "importer": "gltf-scene",
+      "uuid": "cd89beba-6d8a-4889-94df-a4cc5e897512@60bc1",
+      "displayName": "",
+      "id": "60bc1",
+      "name": "maynghien 2.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": false,
+    "allowMeshDataAccess": true,
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "redirect": "cd89beba-6d8a-4889-94df-a4cc5e897512@60bc1",
+    "assetFinder": {
+      "meshes": [
+        "cd89beba-6d8a-4889-94df-a4cc5e897512@d887e"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [
+        "cd89beba-6d8a-4889-94df-a4cc5e897512@8e342"
+      ],
+      "scenes": [
+        "cd89beba-6d8a-4889-94df-a4cc5e897512@60bc1"
+      ]
+    }
+  }
+}

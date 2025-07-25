@@ -1,0 +1,80 @@
+{
+  "ver": "2.3.0",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "53e9da99-0699-48ca-8a26-8e8aacb9e05a",
+  "files": [],
+  "subMetas": {
+    "95cbe": {
+      "importer": "gltf-mesh",
+      "uuid": "53e9da99-0699-48ca-8a26-8e8aacb9e05a@95cbe",
+      "displayName": "",
+      "id": "95cbe",
+      "name": "Lego_Flat_V2_2_001.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "9d093": {
+      "importer": "gltf-material",
+      "uuid": "53e9da99-0699-48ca-8a26-8e8aacb9e05a@9d093",
+      "displayName": "",
+      "id": "9d093",
+      "name": "Material #25.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "dcb41": {
+      "importer": "gltf-scene",
+      "uuid": "53e9da99-0699-48ca-8a26-8e8aacb9e05a@dcb41",
+      "displayName": "",
+      "id": "dcb41",
+      "name": "Lego_Flat_V2_2.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": false,
+    "allowMeshDataAccess": true,
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "redirect": "53e9da99-0699-48ca-8a26-8e8aacb9e05a@dcb41",
+    "assetFinder": {
+      "meshes": [
+        "53e9da99-0699-48ca-8a26-8e8aacb9e05a@95cbe"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [
+        "53e9da99-0699-48ca-8a26-8e8aacb9e05a@9d093"
+      ],
+      "scenes": [
+        "53e9da99-0699-48ca-8a26-8e8aacb9e05a@dcb41"
+      ]
+    }
+  }
+}

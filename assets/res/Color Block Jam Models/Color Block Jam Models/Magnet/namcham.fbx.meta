@@ -1,0 +1,62 @@
+{
+  "ver": "2.3.0",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "d4c27d5d-8813-4ded-be87-7910b5279d4d",
+  "files": [],
+  "subMetas": {
+    "0fc92": {
+      "importer": "gltf-mesh",
+      "uuid": "d4c27d5d-8813-4ded-be87-7910b5279d4d@0fc92",
+      "displayName": "",
+      "id": "0fc92",
+      "name": "Line001.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "1ac2e": {
+      "importer": "gltf-scene",
+      "uuid": "d4c27d5d-8813-4ded-be87-7910b5279d4d@1ac2e",
+      "displayName": "",
+      "id": "1ac2e",
+      "name": "namcham.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": false,
+    "allowMeshDataAccess": true,
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "redirect": "d4c27d5d-8813-4ded-be87-7910b5279d4d@1ac2e",
+    "assetFinder": {
+      "meshes": [
+        "d4c27d5d-8813-4ded-be87-7910b5279d4d@0fc92"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [],
+      "scenes": [
+        "d4c27d5d-8813-4ded-be87-7910b5279d4d@1ac2e"
+      ]
+    }
+  }
+}

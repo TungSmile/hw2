@@ -1,0 +1,62 @@
+{
+  "ver": "2.3.0",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "541cd37e-d013-4933-92dd-a75ea2a50f70",
+  "files": [],
+  "subMetas": {
+    "0a80a": {
+      "importer": "gltf-mesh",
+      "uuid": "541cd37e-d013-4933-92dd-a75ea2a50f70@0a80a",
+      "displayName": "",
+      "id": "0a80a",
+      "name": "Box015.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "bd3ce": {
+      "importer": "gltf-scene",
+      "uuid": "541cd37e-d013-4933-92dd-a75ea2a50f70@bd3ce",
+      "displayName": "",
+      "id": "bd3ce",
+      "name": "box.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": false,
+    "allowMeshDataAccess": true,
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "redirect": "541cd37e-d013-4933-92dd-a75ea2a50f70@bd3ce",
+    "assetFinder": {
+      "meshes": [
+        "541cd37e-d013-4933-92dd-a75ea2a50f70@0a80a"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [],
+      "scenes": [
+        "541cd37e-d013-4933-92dd-a75ea2a50f70@bd3ce"
+      ]
+    }
+  }
+}
