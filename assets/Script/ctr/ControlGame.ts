@@ -42,15 +42,15 @@ export class ControlGame extends Component {
         let tempTouch = t.screne2d.getChildByName("areaEventTouch");
 
         // tempTouch.on(Node.EventType.TOUCH_START, t.onTouchStart, t, true);
-        tempTouch.on(Node.EventType.TOUCH_MOVE, t.onTouchMove, t, true);
+        // tempTouch.on(Node.EventType.TOUCH_MOVE, t.onTouchMove, t, true);
         // tempTouch.on(Node.EventType.TOUCH_END, t.onTouchEnd, t, true);
         // tempTouch.on(Node.EventType.TOUCH_CANCEL, t.onTouchCancel, t, true);
 
 
         tempTouch.on(Node.EventType.TOUCH_START, t.onTouchStart, t, true);
-        // tempTouch.on(Node.EventType.TOUCH_MOVE, t.testTouchMoving, t, true);
-        // tempTouch.on(Node.EventType.TOUCH_END, t.testTouchEnd, t, true);
-        // tempTouch.on(Node.EventType.TOUCH_CANCEL, t.testTouchEnd, t, true);
+        tempTouch.on(Node.EventType.TOUCH_MOVE, t.onTouchMove, t, true);
+        tempTouch.on(Node.EventType.TOUCH_END, t.testTouchEnd, t, true);
+        tempTouch.on(Node.EventType.TOUCH_CANCEL, t.testTouchEnd, t, true);
     }
 
 
@@ -68,8 +68,8 @@ export class ControlGame extends Component {
 
     onTouchStart(event) {
         let t = this;
+        t.actTest = true;
         const touches = event.getAllTouches();
-        t.lastPos = event.getLocation();
         const camera = t.CamMain.getComponent(Camera);
         // // log(DataManager.instance.getLogCount())
         // // turn off hint zoom when play frist time after hint
@@ -102,6 +102,10 @@ export class ControlGame extends Component {
             const hitPoint = raycastClosestResult.hitPoint
             const collider = raycastClosestResult.collider;
             t.block = collider.node ? collider.node : null;
+
+            t.lastPos = new Vec3(hitPoint.x, 0, hitPoint.z);
+            // let temp = t.lastPos.subtract(new Vec3(-hitPoint.x, 0, -hitPoint.z));
+            t.itemTest.setWorldPosition(new Vec3(hitPoint.x, 0, hitPoint.z))
             // log(hitPoint)
             // t.itemTest.setWorldPosition(hitPoint)
             // if (collider.node) {
@@ -110,6 +114,9 @@ export class ControlGame extends Component {
             //     // }
             //     t.block = collider.node
             // }
+        } else {
+            t.lastPos = null;
+            return
         }
     }
 
@@ -144,6 +151,9 @@ export class ControlGame extends Component {
     lastPos = null;
     onTouchMove(event) {
         let t = this;
+        if (t.lastPos == null) {
+            return;
+        }
         // const currentPos = event.getLocation();
         // if (t.block == null) {
         //     return;
@@ -169,8 +179,12 @@ export class ControlGame extends Component {
             const hitPoint = raycastClosestResult.hitPoint
             const collider = raycastClosestResult.collider;
             t.block = collider.node ? collider.node : null;
-            let temp = new Vec3(hitPoint.x, 0, hitPoint.z).normalize();
-            t.itemTest.setWorldPosition(t.itemTest.getWorldPosition(new Vec3).add(temp))
+            let delta = new Vec3(hitPoint.x - t.lastPos.x, 0, hitPoint.z - t.lastPos.z);
+            t.lastPos = new Vec3(hitPoint.x, 0, hitPoint.z);
+            t.itemTest.setWorldPosition(t.itemTest.getWorldPosition(new Vec3).add(delta))
+
+
+            // t.itemTest.setWorldPosition(hitPoint.x, 0, hitPoint.z);
             // if (collider.node) {
             //     // if (t.checkCollider(collider.node)) {
             //     //     return;
@@ -225,8 +239,8 @@ export class ControlGame extends Component {
         // xử lý lỗi moving theo hình tròn
 
 
-        itemPos.x = itemPos.x + (t.posTest.x / 10);
-        itemPos.z = itemPos.z - (t.posTest.y / 10);
+        itemPos.x = itemPos.x + (t.posTest.x / 30);
+        itemPos.z = itemPos.z - (t.posTest.y / 30);
         t.itemTest.setPosition(itemPos)
     }
 
@@ -235,6 +249,7 @@ export class ControlGame extends Component {
     testTouchEnd(e) {
         let t = this;
         t.actTest = false;
+        t.lastPos = null;
     }
 
 
