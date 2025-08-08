@@ -3,12 +3,27 @@ const { ccclass, property } = _decorator;
 
 @ccclass('DataManager')
 export class DataManager extends Component {
-    start() {
-
+    private static _instance: any = null;
+    static getInstance<T>(): T {
+        if (this._instance === null) {
+            this._instance = new this()
+        }
+        return this._instance
     }
 
-    update(deltaTime: number) {
-        
+    static get instance() {
+        return this.getInstance<DataManager>()
     }
+
+    mapGame = null;
+
+
+    checkStep({ row, col }) {
+
+
+        return false
+    }
+
+
 }
 
