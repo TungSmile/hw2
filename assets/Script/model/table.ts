@@ -30,8 +30,9 @@ export class tableScr extends Component {
             if (pos.x < t.col[0]) t.col[0] = pos.x;
             if (pos.x > t.col[1]) t.col[1] = pos.x;
         })
-        t.numberRow = ((t.row[1] - t.row[0]) / 4.1) + 1;
-        t.numberCol = ((t.col[1] - t.col[0]) / 4.1) + 1;
+        t.numberRow = Number(((t.row[1] - t.row[0]) / 4.1).toFixed(0)) + 1;
+        t.numberCol = Number(((t.col[1] - t.col[0]) / 4.1).toFixed(0)) + 1;
+
         tempMap = Array.from({ length: t.numberRow }, () => Array(t.numberCol).fill(-1));
         t.node.children.forEach(e => {
             let pos = e.getWorldPosition(new Vec3());
@@ -39,20 +40,32 @@ export class tableScr extends Component {
             let c = Math.round((pos.x - t.col[0]) / 4.1);
             tempMap[r][c] = 0;
         })
-        log(tempMap);
+        log(t.numberRow, t.numberCol);
         DataManager.instance.mapGame = tempMap;
     }
 
-    checkIndexTable(pos: Vec3) {
+    getRawXYbyPosition(pos: Vec3) {
         let t = this;
-        let r = Number(((pos.z - t.row[0]) / 4.1).toFixed(0))
-            + (((pos.z - t.row[0]) % 4.1 > 0.8) ? -1 : 0)
-            + (((pos.z - t.row[0]) % 4.1 > 0.2) ? 1 : 0);
-        let c = Number(((pos.x - t.col[0]) / 4.1).toFixed(0))
-            + (((pos.x - t.col[0]) % 4.1 > 0.8) ? -1 : 0)
-            + (((pos.x - t.col[0]) % 4.1 > 0.2) ? 1 : 0);
+        let r = (pos.z - t.row[0]) / 4.1;
+        // Number(((pos.z - t.row[0]) / 4.1).toFixed(1))
+        // + (((pos.z - t.row[0]) % 4.1 > 0.8) ? -1 : 0)
+        // + (((pos.z - t.row[0]) % 4.1 > 0.2) ? 1 : 0);
+        let c = (pos.x - t.col[0]) / 4.1;
+        // Number(((pos.x - t.col[0]) / 4.1).toFixed(1))
+        // + (((pos.x - t.col[0]) % 4.1 > 0.8) ? -1 : 0)
+        // + (((pos.x - t.col[0]) % 4.1 > 0.2) ? 1 : 0);
         return { row: r, col: c };
     }
+
+    getPositionbyXY(row: number, col: number) {
+        let t = this;
+        let pos = new Vec3(0, 0, 0);
+        pos.z = t.row[0] + (row * 4.1);
+        pos.x = t.col[0] + (col * 4.1);
+        // log(pos, row, col, "get pos")
+        return pos;
+    }
+
 
 }
 
