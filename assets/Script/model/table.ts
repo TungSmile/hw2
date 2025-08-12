@@ -1,5 +1,6 @@
 import { _decorator, Component, log, Node, Vec3 } from 'cc';
 import { DataManager } from '../data/DataManager';
+import { ForTable } from '../data/Conf';
 const { ccclass, property } = _decorator;
 
 @ccclass('tableScr')
@@ -40,7 +41,7 @@ export class tableScr extends Component {
             let c = Math.round((pos.x - t.col[0]) / 4.1);
             tempMap[r][c] = 0;
         })
-        log(t.numberRow, t.numberCol);
+        log("Row:" + t.numberRow, "Col:" + t.numberCol);
         DataManager.instance.mapGame = tempMap;
     }
 
@@ -59,10 +60,11 @@ export class tableScr extends Component {
 
     getPositionbyXY(row: number, col: number) {
         let t = this;
-        let pos = new Vec3(0, 0, 0);
-        pos.z = t.row[0] + (row * 4.1);
-        pos.x = t.col[0] + (col * 4.1);
-        // log(pos, row, col, "get pos")
+        let pos = new Vec3();
+        pos.z = ((t.row[0] * ForTable.rate) + (row * 41)) / ForTable.rate;
+        pos.x = ((t.col[0] * ForTable.rate) + (col * 41)) / ForTable.rate;
+        pos.y = 1.5;
+        // log("checkz", pos.z, row, t.row[0]);
         return pos;
     }
 

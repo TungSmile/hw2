@@ -14,16 +14,11 @@ export class DataManager extends Component {
     static get instance() {
         return this.getInstance<DataManager>()
     }
-
     mapGame = null;
-
-
-    checkStep({ row, col }) {
-
-
-        return false
-    }
-
-
+    squader1 = [[1, 1], [1, 1]];
+    shadesL = [[1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 1, 1], [0, 0, 1, 1]];
+    shadesCross = [[0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0]]
+    shadesT = [[0, 0, 1, 1], [0, 0, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 1, 1], [0, 0, 1, 1]];
+    shades = [this.squader1, this.shadesL, this.shadesCross, this.shadesT];
 }
 
