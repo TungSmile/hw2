@@ -16,9 +16,13 @@ export class DataManager extends Component {
     }
     mapGame = null;
     squader1 = [[1, 1], [1, 1]];
-    shadesL = [[1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 1, 1], [0, 0, 1, 1]];
+    shadesL = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0], [1, 1, 0, 0]];
     shadesCross = [[0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1], [0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0]]
     shadesT = [[0, 0, 1, 1], [0, 0, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 1, 1], [0, 0, 1, 1]];
-    shades = [this.squader1, this.shadesL, this.shadesCross, this.shadesT];
+    squader2 = [[1, 1], [1, 1], [1, 1], [1, 1]];
+    squader3 = [[1, 1, 1, 1], [1, 1, 1, 1]];
+
+    shades = [this.squader1, this.squader2, this.squader3];
+
 }
 

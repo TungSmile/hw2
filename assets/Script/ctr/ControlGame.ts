@@ -59,6 +59,7 @@ export class ControlGame extends Component {
                 t.eventBlock = true;
                 t.block = collider.node;
                 t.ADDBBT(true);
+                t.posCorrect = t.block.getPosition(new Vec3);
             } else {
                 return
             }
@@ -89,8 +90,34 @@ export class ControlGame extends Component {
             let delta = new Vec3(hitPoint.x - t.lastPos.x, 0, hitPoint.z - t.lastPos.z);
             t.lastPos = new Vec3(hitPoint.x, 0, hitPoint.z);
 
-            let pos = t.CPBWM(t.block.getPosition(new Vec3).add(delta));
-            t.block.setPosition(pos);
+
+
+
+            let posNew = t.block.getPosition(new Vec3).add(delta);
+            let tempTable = t.table.getComponent(tableScr);
+            let xz = tempTable.getRawXYbyPosition(posNew);
+
+            t.CPOBWM(xz.row, xz.col);
+
+
+
+            let xCor: number = t.checkCol(xz.col);
+            let zCor: number = t.checkRow(xz.row);
+            t.posCorrect = tempTable.getPositionbyXY(zCor, xCor)
+            t.block.setPosition(posNew)
+
+            // if (t.CCBIM(xCor, zCor)) {
+            //     t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
+            //     t.block.setPosition(posNew);
+            // } else {
+            //     t.block.setPosition(t.posCorrect);
+            //     t.ADDBBT(false);
+            // }
+
+
+
+            // let pos = t.CPBWM(t.block.getPosition(new Vec3).add(delta));
+            // t.block.setPosition(pos);
 
             // let pos = t.block.getWorldPosition(new Vec3).add(delta);
             // t.CPBWM(pos);
@@ -101,7 +128,8 @@ export class ControlGame extends Component {
 
     onTouchEnd(event) {
         let t = this;
-        if (t.block != null) {
+
+        if (t.block != null && !t.eventBlock) {
             t.ADDBBT(false);
             // t.scheduleOnce(() => {
             //     t.block = null;
@@ -111,7 +139,8 @@ export class ControlGame extends Component {
 
     onTouchCancel(event) {
         let t = this;
-        if (t.block != null) {
+
+        if (t.block != null && !t.eventBlock) {
             t.ADDBBT(false);
             // t.scheduleOnce(() => {
             //     t.block = null;
@@ -126,34 +155,58 @@ export class ControlGame extends Component {
         let t = this;
         tween(t.block)
             .by(0.1, { worldPosition: new Vec3(0, isDrop ? 1.5 : -1.5, 0) })
+            // .to(0, { position: t.posCorrect })
             .call(() => {
                 if (!isDrop) {
+                    // log(t.block, "check")
                     t.block.setPosition(t.posCorrect);
-                    t.block = null;
+                    // t.block = null;
                 }
                 t.eventBlock = false;
 
             })
-            // .delay(0.1)
-            // .call(() => {
-            //     if (!isDrop) { t.block = null; }
-            // })
+            .delay(0.1)
+            .call(() => {
+                // if (!isDrop) { t.block = null; }
+            })
             .start();
     }
 
     // check pos block when moving
     CPBWM(position: Vec3) {
         let t = this;
-        let xz = t.table.getComponent(tableScr).getRawXYbyPosition(position);
+        let tempTable = t.table.getComponent(tableScr);
+        let xz = tempTable.getRawXYbyPosition(position);
         let xCor: number = t.checkCol(xz.col);
         let zCor: number = t.checkRow(xz.row);
         // z=row x=col
-        log("xz", xCor, zCor, "CPBWM");
-        t.posCorrect = t.table.getComponent(tableScr).getPositionbyXY(zCor, xCor);
-        log("check pos map ", t.CCBIM(xCor, zCor))
+
+        // t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
+
+        // if (t.CCBIM(xCor, zCor)) {
+        //     t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
+        //     return position;
+        // } else {
+        //     return t.posCorrect;
+
+        // }
 
 
-        return position;
+        // while (!t.CCBIM(xCor, zCor)) {
+        //     let tempXY = tempTable.goHeadCell(xCor, zCor);
+        //     if (tempXY == null) {
+        //         log("No more space to move block");
+        //         t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
+
+        //         return t.posCorrect;
+        //     }
+        //     xCor = tempXY.col;
+        //     zCor = tempXY.row;
+        //     t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
+        // }
+
+
+        // return position;
 
 
 
@@ -168,7 +221,7 @@ export class ControlGame extends Component {
             return 0
         } else if (rs > t.table.getComponent(tableScr).numberCol - 1) {
             rs = t.table.getComponent(tableScr).numberCol - 1;
-            return Math.round(t.table.getComponent(tableScr).numberCol - 1);
+            return rs;
         }
         //  else if (rs % 1 > 0.8) {
         //     rs = Math.ceil(x);
@@ -186,7 +239,7 @@ export class ControlGame extends Component {
             return 0
         } else if (rs > t.table.getComponent(tableScr).numberRow - 1) {
             rs = t.table.getComponent(tableScr).numberRow - 1;
-            return Math.round(t.table.getComponent(tableScr).numberRow - 1);
+            return rs;
         }
         //  else if (rs % 1 > 0.8) {
         //     rs = Math.ceil(z);
@@ -199,20 +252,56 @@ export class ControlGame extends Component {
     //Check Case Block In Map
     CCBIM(x, z) {
         let t = this;
+        let tempMap = DataManager.instance.mapGame;
         let typeBlock = DataManager.instance.shades[t.block.getComponent(block).typeShade];
+        let typeColor = t.block.getComponent(block).typeColor;
+        // log("CCBIM", x, z, typeBlock);
         for (let i = 0; i < typeBlock.length; i++) {
             for (let j = 0; j < typeBlock[i].length; j++) {
                 if (typeBlock[i][j] == 1) {
                     let row = z + i;
                     let col = x + j;
+                    if (row > t.table.getComponent(tableScr).numberRow
+                        || col > t.table.getComponent(tableScr).numberCol) {
+                        return false;
+                    }
+                    log("check", row, col, DataManager.instance.mapGame[row][col], typeColor)
                     if (DataManager.instance.mapGame[row][col] < 0) {
                         return false;
+                    }
+                    tempMap[row][col] = typeColor
+                }
+            }
+        }
+        DataManager.instance.mapGame = tempMap;
+        return true;
+    }
+
+    // caculation position of block when moving
+    CPOBWM(row: number, col: number) {
+        let t = this
+        let typeBlock = DataManager.instance.shades[t.block.getComponent(block).typeShade];
+        for (let i = 0; i < typeBlock.length; i++) {
+            for (let j = 0; j < typeBlock[i].length; j++) {
+                if (typeBlock[i][j] == 1) {
+                    let r = row + i;
+                    let c = col + j;
+                    if (r >= t.table.getComponent(tableScr).numberRow
+                        || c >= t.table.getComponent(tableScr).numberCol
+                        || r < 0
+                        || c < 0) {
+                        // t.block.setPosition(t.posCorrect);
+                        log("Out of map", r, c);
+                        return;
                     }
                 }
             }
         }
-        return true;
+        log("in of map");
+        // t.posCorrect = t.table.getComponent(tableScr).getPositionbyXY(row, col);
+        // t.block.setPosition(t.posCorrect)
     }
+
 
 
 
