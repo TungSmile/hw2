@@ -21,7 +21,7 @@ export class DataManager extends Component {
     shadesT = [[0, 0, 1, 1], [0, 0, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 1, 1], [0, 0, 1, 1]];
     squader2 = [[1, 1], [1, 1], [1, 1], [1, 1]];
     squader3 = [[1, 1, 1, 1], [1, 1, 1, 1]];
-
+    //r 12 c 8
     shades = [this.squader1, this.squader2, this.squader3];
 
 }

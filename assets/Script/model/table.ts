@@ -39,22 +39,54 @@ export class tableScr extends Component {
             let pos = e.getWorldPosition(new Vec3());
             let r = Math.round((pos.z - t.row[0]) / 4.1);
             let c = Math.round((pos.x - t.col[0]) / 4.1);
-            tempMap[r][c] = 0;
+
+            switch (e.name) {
+                case "box":
+                    tempMap[r][c] = 0;
+                    break;
+                case "wall":
+                    tempMap[r][c] = -1;
+                    break;
+                case "blue":
+                    tempMap[r][c] = 2;
+                    break;
+                case "green":
+                    tempMap[r][c] = 3;
+                    break;
+                case "orange":
+                    tempMap[r][c] = 4;
+                    break;
+                case "pink":
+                    tempMap[r][c] = 5;
+                    break;
+                case "red":
+                    tempMap[r][c] = 6;
+                    break;
+                case "yellow":
+                    tempMap[r][c] = 7;
+                    break;
+                default:
+                    break;
+            }
+
+
+
+
+
         })
-        log("Row:" + t.numberRow, "Col:" + t.numberCol, tempMap);
+        // log("Row:" + t.numberRow, "Col:" + t.numberCol, tempMap);
         DataManager.instance.mapGame = tempMap;
     }
+
+
+
+
+
 
     getRawXYbyPosition(pos: Vec3) {
         let t = this;
         let r = (pos.z - t.row[0]) / 4.1;
-        // Number(((pos.z - t.row[0]) / 4.1).toFixed(1))
-        // + (((pos.z - t.row[0]) % 4.1 > 0.8) ? -1 : 0)
-        // + (((pos.z - t.row[0]) % 4.1 > 0.2) ? 1 : 0);
         let c = (pos.x - t.col[0]) / 4.1;
-        // Number(((pos.x - t.col[0]) / 4.1).toFixed(1))
-        // + (((pos.x - t.col[0]) % 4.1 > 0.8) ? -1 : 0)
-        // + (((pos.x - t.col[0]) % 4.1 > 0.2) ? 1 : 0);
         return { row: r, col: c };
     }
 
@@ -66,17 +98,6 @@ export class tableScr extends Component {
         pos.y = 1.5;
         // log("checkz", pos.z, row, t.row[0]);
         return pos;
-    }
-
-    goHeadCell(x: number, z: number) {
-        let t = this;
-        if (x < t.numberRow) {
-            return { row: x + 1, col: z };
-        } else if (z < t.numberCol) {
-            return { row: x, col: z + 1 };
-        } else {
-            return null;
-        }
     }
 
 

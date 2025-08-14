@@ -38,11 +38,25 @@ export class ControlGame extends Component {
         t.screne2d.on(Node.EventType.TOUCH_MOVE, t.onTouchMove, t, true);
         t.screne2d.on(Node.EventType.TOUCH_END, t.onTouchEnd, t, true);
         t.screne2d.on(Node.EventType.TOUCH_CANCEL, t.onTouchCancel, t, true);
+        t.loadPosBlock()
     }
+
+    loadPosBlock() {
+        let t = this
+        t.blocks.children.forEach(e => {
+            t.block = e;
+            t.posCorrect = t.block.getPosition(new Vec3);
+            t.addMoreDataInMAp()
+        })
+    }
+
 
 
     onTouchStart(event) {
         let t = this;
+        if (t.eventBlock) {
+            return;
+        }
         const touches = event.getAllTouches();
         const camera = t.CamMain.getComponent(Camera);
         let ray = new geometry.Ray();
@@ -60,20 +74,23 @@ export class ControlGame extends Component {
                 t.block = collider.node;
                 t.ADDBBT(true);
                 t.posCorrect = t.block.getPosition(new Vec3);
+                t.addMoreDataInMAp(false)
+
             } else {
                 return
             }
             t.lastPos = new Vec3(hitPoint.x, 0, hitPoint.z);
         } else {
-            t.lastPos = null;
+            t.block = null;
             return
         }
     }
 
     lastPos = null;
+
     onTouchMove(event) {
         let t = this;
-        if (t.block == null && !t.eventBlock) {
+        if (t.block == null || t.eventBlock) {
             return;
         }
         const camera = t.CamMain.getComponent(Camera);
@@ -97,39 +114,41 @@ export class ControlGame extends Component {
             let tempTable = t.table.getComponent(tableScr);
             let xz = tempTable.getRawXYbyPosition(posNew);
 
-            t.CPOBWM(xz.row, xz.col);
-
 
 
             let xCor: number = t.checkCol(xz.col);
             let zCor: number = t.checkRow(xz.row);
-            t.posCorrect = tempTable.getPositionbyXY(zCor, xCor)
-            t.block.setPosition(posNew)
+            if (t.CPOBWM(xCor, zCor)) {
+                t.posCorrect = tempTable.getPositionbyXY(zCor, xCor)
 
-            // if (t.CCBIM(xCor, zCor)) {
-            //     t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
-            //     t.block.setPosition(posNew);
-            // } else {
-            //     t.block.setPosition(t.posCorrect);
-            //     t.ADDBBT(false);
+                t.block.setPosition(posNew)
+            }
+            // else {
+            //     t.eventBlock = false;
+            //     tween(t.block)
+            //         .to(0.2, { position: t.posCorrect })
+            //         .call(() => {
+            //             t.eventBlock = true
+            //         })
+            //         .start();
+            //     return
             // }
 
+            // else {
 
+            //     t.block.setPosition(posNew)
 
-            // let pos = t.CPBWM(t.block.getPosition(new Vec3).add(delta));
-            // t.block.setPosition(pos);
+            // }
 
-            // let pos = t.block.getWorldPosition(new Vec3).add(delta);
-            // t.CPBWM(pos);
-            // t.block.setWorldPosition(t.block.getWorldPosition(new Vec3).add(delta));
 
         }
     }
 
     onTouchEnd(event) {
         let t = this;
-
         if (t.block != null && !t.eventBlock) {
+            t.addMoreDataInMAp()
+
             t.ADDBBT(false);
             // t.scheduleOnce(() => {
             //     t.block = null;
@@ -139,8 +158,9 @@ export class ControlGame extends Component {
 
     onTouchCancel(event) {
         let t = this;
-
         if (t.block != null && !t.eventBlock) {
+            t.addMoreDataInMAp()
+
             t.ADDBBT(false);
             // t.scheduleOnce(() => {
             //     t.block = null;
@@ -172,137 +192,93 @@ export class ControlGame extends Component {
             .start();
     }
 
-    // check pos block when moving
-    CPBWM(position: Vec3) {
-        let t = this;
-        let tempTable = t.table.getComponent(tableScr);
-        let xz = tempTable.getRawXYbyPosition(position);
-        let xCor: number = t.checkCol(xz.col);
-        let zCor: number = t.checkRow(xz.row);
-        // z=row x=col
-
-        // t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
-
-        // if (t.CCBIM(xCor, zCor)) {
-        //     t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
-        //     return position;
-        // } else {
-        //     return t.posCorrect;
-
-        // }
-
-
-        // while (!t.CCBIM(xCor, zCor)) {
-        //     let tempXY = tempTable.goHeadCell(xCor, zCor);
-        //     if (tempXY == null) {
-        //         log("No more space to move block");
-        //         t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
-
-        //         return t.posCorrect;
-        //     }
-        //     xCor = tempXY.col;
-        //     zCor = tempXY.row;
-        //     t.posCorrect = tempTable.getPositionbyXY(zCor, xCor);
-        // }
-
-
-        // return position;
-
-
-
-    }
 
 
     checkCol(x: number) {
-        let t = this;
-        let rs: number = x;
-        if (x < 0) {
-            rs = 0;
-            return 0
-        } else if (rs > t.table.getComponent(tableScr).numberCol - 1) {
-            rs = t.table.getComponent(tableScr).numberCol - 1;
-            return rs;
+        if (x % 1 < 0.1) {
+            return Math.floor(x);
+        } else if (x % 1 > 0.9) {
+            return Math.ceil(x);
         }
-        //  else if (rs % 1 > 0.8) {
-        //     rs = Math.ceil(x);
-        // } else if (rs % 1 < 0.2) {
-        //     rs = Math.floor(x);
-        // }
-        return Math.round(rs);
+        return Math.round(x);
     }
 
     checkRow(z: number) {
-        let t = this;
-        let rs: number = z;
-        if (z < 0) {
-            rs = 0;
-            return 0
-        } else if (rs > t.table.getComponent(tableScr).numberRow - 1) {
-            rs = t.table.getComponent(tableScr).numberRow - 1;
-            return rs;
+        if (z % 1 < 0.1) {
+            return Math.floor(z);
+        } else if (z % 1 > 0.9) {
+            return Math.ceil(z);
         }
-        //  else if (rs % 1 > 0.8) {
-        //     rs = Math.ceil(z);
-        // } else if (rs % 1 < 0.2) {
-        //     rs = Math.floor(z);
-        // }
-        return Math.round(rs);
+        return Math.round(z);
     }
 
-    //Check Case Block In Map
-    CCBIM(x, z) {
-        let t = this;
-        let tempMap = DataManager.instance.mapGame;
-        let typeBlock = DataManager.instance.shades[t.block.getComponent(block).typeShade];
-        let typeColor = t.block.getComponent(block).typeColor;
-        // log("CCBIM", x, z, typeBlock);
-        for (let i = 0; i < typeBlock.length; i++) {
-            for (let j = 0; j < typeBlock[i].length; j++) {
-                if (typeBlock[i][j] == 1) {
-                    let row = z + i;
-                    let col = x + j;
-                    if (row > t.table.getComponent(tableScr).numberRow
-                        || col > t.table.getComponent(tableScr).numberCol) {
-                        return false;
-                    }
-                    log("check", row, col, DataManager.instance.mapGame[row][col], typeColor)
-                    if (DataManager.instance.mapGame[row][col] < 0) {
-                        return false;
-                    }
-                    tempMap[row][col] = typeColor
-                }
-            }
-        }
-        DataManager.instance.mapGame = tempMap;
-        return true;
-    }
+
 
     // caculation position of block when moving
     CPOBWM(row: number, col: number) {
-        let t = this
+        let t = this;
         let typeBlock = DataManager.instance.shades[t.block.getComponent(block).typeShade];
+
         for (let i = 0; i < typeBlock.length; i++) {
             for (let j = 0; j < typeBlock[i].length; j++) {
                 if (typeBlock[i][j] == 1) {
-                    let r = row + i;
-                    let c = col + j;
-                    if (r >= t.table.getComponent(tableScr).numberRow
-                        || c >= t.table.getComponent(tableScr).numberCol
+                    let r = row + j;
+                    let c = col + i;
+                    if (r >= t.table.getComponent(tableScr).numberCol
+                        || c >= t.table.getComponent(tableScr).numberRow
                         || r < 0
                         || c < 0) {
                         // t.block.setPosition(t.posCorrect);
-                        log("Out of map", r, c);
-                        return;
+                        // log("Out of map case 1", r, c);
+                        return false;
                     }
+
+                    if (DataManager.instance.mapGame[c][r] == t.block.getComponent(block).typeColor) {
+                        t.eventDoneGate()
+                        return false;
+                    }
+                    if (DataManager.instance.mapGame[c][r] != 0) {
+                        // t.block.setPosition(t.posCorrect);
+                        // log("Out of map case 2");
+                        return false;
+                    }
+
+
+                    // log(DataManager.instance.mapGame[r][c], r, c)
+                }
+
+            }
+        }
+        // log("in of map");
+        // t.posCorrect = t.table.getComponent(tableScr).getPositionbyXY(tempR, tempC);
+        // t.block.setPosition(pos)
+        return true
+    }
+
+    addMoreDataInMAp(isAdd: boolean = true) {
+        let t = this;
+        let typeBlock = DataManager.instance.shades[t.block.getComponent(block).typeShade];
+        let xz = t.table.getComponent(tableScr).getRawXYbyPosition(t.posCorrect)
+        for (let i = 0; i < typeBlock.length; i++) {
+            for (let j = 0; j < typeBlock[i].length; j++) {
+                if (typeBlock[i][j] == 1) {
+                    let r = Math.round(xz.col) + j;
+                    let c = Math.round(xz.row) + i;
+                    DataManager.instance.mapGame[c][r] = isAdd ? 1 : 0;
                 }
             }
         }
-        log("in of map");
-        // t.posCorrect = t.table.getComponent(tableScr).getPositionbyXY(row, col);
-        // t.block.setPosition(t.posCorrect)
+
+        // log("Add more data in map", DataManager.instance.mapGame);
+
     }
 
+    eventDoneGate() {
+        let t = this;
+        t.block.destroy();
+        t.block = null;
 
+    }
 
 
     update(deltaTime: number) {
