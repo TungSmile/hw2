@@ -1,0 +1,80 @@
+{
+  "ver": "2.3.0",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c",
+  "files": [],
+  "subMetas": {
+    "a62fe": {
+      "importer": "gltf-mesh",
+      "uuid": "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c@a62fe",
+      "displayName": "",
+      "id": "a62fe",
+      "name": "Scene.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "0bff9": {
+      "importer": "gltf-material",
+      "uuid": "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c@0bff9",
+      "displayName": "",
+      "id": "0bff9",
+      "name": "Lit.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "a57b2": {
+      "importer": "gltf-scene",
+      "uuid": "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c@a57b2",
+      "displayName": "",
+      "id": "a57b2",
+      "name": "Blockade_2.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": false,
+    "allowMeshDataAccess": true,
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "redirect": "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c@a57b2",
+    "assetFinder": {
+      "meshes": [
+        "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c@a62fe"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [
+        "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c@0bff9"
+      ],
+      "scenes": [
+        "8c1d415f-877f-4ea5-b7ae-2b16a0d3053c@a57b2"
+      ]
+    }
+  }
+}

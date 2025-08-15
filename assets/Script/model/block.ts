@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, Node } from 'cc';
+import { _decorator, CCInteger, Component, Node, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('block')
@@ -9,9 +9,13 @@ export class block extends Component {
     typeShade: number = 0;
 
     start() {
-
+        this.setScale()
     }
 
+
+    setScale() {
+        this.node.children[0].setScale(new Vec3(3.8, 3.8, 3))
+    }
     update(deltaTime: number) {
 
     }
