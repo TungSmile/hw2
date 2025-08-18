@@ -118,6 +118,8 @@ export class ControlGame extends Component {
 
             let xCor: number = t.checkCol(xz.col);
             let zCor: number = t.checkRow(xz.row);
+
+
             if (t.CPOBWM(xCor, zCor)) {
                 t.posCorrect = tempTable.getPositionbyXY(zCor, xCor)
 
@@ -174,7 +176,7 @@ export class ControlGame extends Component {
     ADDBBT(isDrop: boolean) {
         let t = this;
         tween(t.block)
-            .by(0.1, { worldPosition: new Vec3(0, isDrop ? 1.5 : -1.5, 0) })
+            .by(0.1, { worldPosition: new Vec3(0, isDrop ? 3 : -3, 0) })
             // .to(0, { position: t.posCorrect })
             .call(() => {
                 if (!isDrop) {
@@ -195,18 +197,20 @@ export class ControlGame extends Component {
 
 
     checkCol(x: number) {
-        if (x % 1 < 0.1) {
+
+        log(x % 1, "a")
+        if (x % 1 < 0.2) {
             return Math.floor(x);
-        } else if (x % 1 > 0.9) {
+        } else if (x % 1 > 0.8) {
             return Math.ceil(x);
         }
         return Math.round(x);
     }
 
     checkRow(z: number) {
-        if (z % 1 < 0.1) {
+        if (z % 1 < 0.2) {
             return Math.floor(z);
-        } else if (z % 1 > 0.9) {
+        } else if (z % 1 > 0.8) {
             return Math.ceil(z);
         }
         return Math.round(z);
