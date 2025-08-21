@@ -17,9 +17,9 @@
       }
     ],
     "defaultMaterial": {
-      "restitution": 0.5
+      "restitution": 0.1
     },
     "autoSimulation": true,
-    "fixedTimeStep": 0.001
+    "fixedTimeStep": 0.016667
   }
 }

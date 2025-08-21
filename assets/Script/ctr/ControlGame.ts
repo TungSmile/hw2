@@ -2,6 +2,8 @@ import { _decorator, Camera, Component, geometry, log, Node, PhysicsSystem, Rigi
 import { tableScr } from '../model/table';
 import { DataManager } from '../data/DataManager';
 import { block } from '../model/block';
+import { wallGate } from '../model/wallGate';
+import super_html_playable from '../plugin/super_html_playable';
 const { ccclass, property } = _decorator;
 
 @ccclass('ControlGame')
@@ -15,6 +17,8 @@ export class ControlGame extends Component {
     table: Node = null;
     @property({ type: Node })
     blocks: Node = null;
+    @property({ type: Node })
+    wall: Node = null;
     block: Node = null;
     eventBlock: boolean = false;
     posCorrect: Vec3 = null;
@@ -107,42 +111,19 @@ export class ControlGame extends Component {
             let delta = new Vec3(hitPoint.x - t.lastPos.x, 0, hitPoint.z - t.lastPos.z);
             t.lastPos = new Vec3(hitPoint.x, 0, hitPoint.z);
 
-
-
-
             let posNew = t.block.getPosition(new Vec3).add(delta);
             let tempTable = t.table.getComponent(tableScr);
             let xz = tempTable.getRawXYbyPosition(posNew);
 
-
-
             let xCor: number = t.checkCol(xz.col);
             let zCor: number = t.checkRow(xz.row);
-
-
             if (t.CPOBWM(xCor, zCor)) {
-                t.posCorrect = tempTable.getPositionbyXY(zCor, xCor)
-
+                if (xCor % 2 != 0 && zCor % 2 != 0) {
+                    log(xCor, zCor)
+                    t.posCorrect = tempTable.getPositionbyXY(zCor, xCor)
+                }
                 t.block.setPosition(posNew)
             }
-            // else {
-            //     t.eventBlock = false;
-            //     tween(t.block)
-            //         .to(0.2, { position: t.posCorrect })
-            //         .call(() => {
-            //             t.eventBlock = true
-            //         })
-            //         .start();
-            //     return
-            // }
-
-            // else {
-
-            //     t.block.setPosition(posNew)
-
-            // }
-
-
         }
     }
 
@@ -150,11 +131,7 @@ export class ControlGame extends Component {
         let t = this;
         if (t.block != null && !t.eventBlock) {
             t.addMoreDataInMAp()
-
             t.ADDBBT(false);
-            // t.scheduleOnce(() => {
-            //     t.block = null;
-            // }, 0.3);
         }
     }
 
@@ -162,12 +139,7 @@ export class ControlGame extends Component {
         let t = this;
         if (t.block != null && !t.eventBlock) {
             t.addMoreDataInMAp()
-
             t.ADDBBT(false);
-            // t.scheduleOnce(() => {
-            //     t.block = null;
-            // }, 0.2);
-
         }
     }
 
@@ -176,29 +148,23 @@ export class ControlGame extends Component {
     ADDBBT(isDrop: boolean) {
         let t = this;
         tween(t.block)
-            .by(0.1, { worldPosition: new Vec3(0, isDrop ? 3 : -3, 0) })
-            // .to(0, { position: t.posCorrect })
+            .by(0.05, { worldPosition: new Vec3(0, isDrop ? 3 : -3, 0) })
             .call(() => {
                 if (!isDrop) {
-                    // log(t.block, "check")
                     t.block.setPosition(t.posCorrect);
-                    // t.block = null;
                 }
+                t.block.getChildByName("around").active = isDrop;
                 t.eventBlock = false;
-
             })
             .delay(0.1)
             .call(() => {
-                // if (!isDrop) { t.block = null; }
             })
             .start();
     }
 
 
-
     checkCol(x: number) {
 
-        log(x % 1, "a")
         if (x % 1 < 0.2) {
             return Math.floor(x);
         } else if (x % 1 > 0.8) {
@@ -216,13 +182,11 @@ export class ControlGame extends Component {
         return Math.round(z);
     }
 
-
-
     // caculation position of block when moving
     CPOBWM(row: number, col: number) {
         let t = this;
         let typeBlock = DataManager.instance.shades[t.block.getComponent(block).typeShade];
-
+        let checkTwo = 0;
         for (let i = 0; i < typeBlock.length; i++) {
             for (let j = 0; j < typeBlock[i].length; j++) {
                 if (typeBlock[i][j] == 1) {
@@ -232,30 +196,22 @@ export class ControlGame extends Component {
                         || c >= t.table.getComponent(tableScr).numberRow
                         || r < 0
                         || c < 0) {
-                        // t.block.setPosition(t.posCorrect);
-                        // log("Out of map case 1", r, c);
                         return false;
                     }
-
                     if (DataManager.instance.mapGame[c][r] == t.block.getComponent(block).typeColor) {
-                        t.eventDoneGate()
+                        checkTwo++
+                    }
+                    if (checkTwo == 2) {
+                        t.eventDoneGate(t.block.getComponent(block).typeColor);
+                        t.wall.getComponent(wallGate).activeGate(DataManager.instance.mapGame[c][r] - 2, 0.5, (typeBlock.length * typeBlock[i].length))
                         return false;
                     }
-                    if (DataManager.instance.mapGame[c][r] != 0) {
-                        // t.block.setPosition(t.posCorrect);
-                        // log("Out of map case 2");
+                    if (DataManager.instance.mapGame[c][r] != 0 && checkTwo == 0) {
                         return false;
                     }
-
-
-                    // log(DataManager.instance.mapGame[r][c], r, c)
                 }
-
             }
         }
-        // log("in of map");
-        // t.posCorrect = t.table.getComponent(tableScr).getPositionbyXY(tempR, tempC);
-        // t.block.setPosition(pos)
         return true
     }
 
@@ -272,17 +228,38 @@ export class ControlGame extends Component {
                 }
             }
         }
-
-        // log("Add more data in map", DataManager.instance.mapGame);
-
     }
 
-    eventDoneGate() {
+    eventDoneGate(n: number, countCell: number = 4) {
         let t = this;
-        t.block.destroy();
-        t.block = null;
+        let startPos = t.block.getWorldPosition(new Vec3());
+        let forward = t.wall.getComponent(wallGate).getForwarOfGateById(n - 2);
+        let targetPos = startPos.add(forward.multiplyScalar(-2));
+        t.eventBlock = true;
+        tween(t.block)
+            .to(0.25, { worldPosition: new Vec3(targetPos.x, -8.5, targetPos.z) })
+            .call(() => {
+                t.block.destroy();
+                t.block = null;
+                DataManager.instance.countDone++;
+                if (DataManager.instance.countDone == 3) {
+                    t.enventEndGame()
+                } else {
+                    t.eventBlock = false;
+                }
+            })
+            .start();
+
 
     }
+    enventEndGame() {
+        let t = this;
+        super_html_playable.game_end();
+        super_html_playable.download()
+    }
+
+
+
 
 
     update(deltaTime: number) {

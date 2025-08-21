@@ -14,6 +14,9 @@ export class DataManager extends Component {
     static get instance() {
         return this.getInstance<DataManager>()
     }
+
+    countDone = 0;
+
     mapGame = null;
     squader1 = [[1, 1], [1, 1]];
     shadesL = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0], [1, 1, 0, 0]];

@@ -1,0 +1,36 @@
+{
+  "__type__": "cc.Material",
+  "_name": "",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "873cc7cc-2a3f-411e-ac3f-c0c19202dbe9",
+    "__expectedType__": "cc.EffectAsset"
+  },
+  "_techIdx": 0,
+  "_defines": [
+    {}
+  ],
+  "_states": [
+    {
+      "rasterizerState": {},
+      "depthStencilState": {},
+      "blendState": {
+        "targets": [
+          {}
+        ]
+      }
+    }
+  ],
+  "_props": [
+    {
+      "color": {
+        "__type__": "cc.Color",
+        "r": 235,
+        "g": 255,
+        "b": 0,
+        "a": 255
+      }
+    }
+  ]
+}
