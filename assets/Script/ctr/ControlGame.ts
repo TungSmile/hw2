@@ -1,4 +1,4 @@
-import { _decorator, Camera, Component, geometry, log, Node, PhysicsSystem, RigidBody, tween, Vec2, Vec3, view } from 'cc';
+import { _decorator, AudioClip, AudioSource, Camera, Component, geometry, log, Node, PhysicsSystem, tween, Vec3, view } from 'cc';
 import { tableScr } from '../model/table';
 import { DataManager } from '../data/DataManager';
 import { block } from '../model/block';
@@ -23,6 +23,8 @@ export class ControlGame extends Component {
     eventBlock: boolean = false;
     posCorrect: Vec3 = null;
 
+    @property({ type: AudioClip })
+    sound = [];
 
     start() {
         let t = this;
@@ -31,18 +33,24 @@ export class ControlGame extends Component {
             t.resize();
         });
         t.resize();
+        super_html_playable.set_app_store_url("https://www.apple.com/app-store");
+        super_html_playable.set_google_play_url("https://play.google.com/store/apps/details?id=com.gplay.wood.jam.color.block")
     }
 
     resize() {
     }
+
+
+
 
     registerEventOfCam() {
         let t = this;
         t.screne2d.on(Node.EventType.TOUCH_START, t.onTouchStart, t, true);
         t.screne2d.on(Node.EventType.TOUCH_MOVE, t.onTouchMove, t, true);
         t.screne2d.on(Node.EventType.TOUCH_END, t.onTouchEnd, t, true);
-        t.screne2d.on(Node.EventType.TOUCH_CANCEL, t.onTouchCancel, t, true);
+        t.screne2d.on(Node.EventType.TOUCH_CANCEL, t.onTouchEnd, t, true);
         t.loadPosBlock()
+
     }
 
     loadPosBlock() {
@@ -50,8 +58,10 @@ export class ControlGame extends Component {
         t.blocks.children.forEach(e => {
             t.block = e;
             t.posCorrect = t.block.getPosition(new Vec3);
+            e.getChildByName("around").active = false
             t.addMoreDataInMAp()
         })
+
     }
 
 
@@ -59,6 +69,7 @@ export class ControlGame extends Component {
     onTouchStart(event) {
         let t = this;
         if (t.eventBlock) {
+
             return;
         }
         const touches = event.getAllTouches();
@@ -119,7 +130,12 @@ export class ControlGame extends Component {
             let zCor: number = t.checkRow(xz.row);
             if (t.CPOBWM(xCor, zCor)) {
                 if (xCor % 2 != 0 && zCor % 2 != 0) {
-                    log(xCor, zCor)
+                    if (t.checkCaseSpecial(zCor, xCor, t.block.getComponent(block).typeColor - 2)) {
+                        t.playSound(0)
+                        t.eventDoneGateS(t.block.getComponent(block).typeColor, zCor, xCor);
+                        t.wall.getComponent(wallGate).activeGate(t.block.getComponent(block).typeColor - 2, 0.5)
+                        return;
+                    }
                     t.posCorrect = tempTable.getPositionbyXY(zCor, xCor)
                 }
                 t.block.setPosition(posNew)
@@ -130,6 +146,11 @@ export class ControlGame extends Component {
     onTouchEnd(event) {
         let t = this;
         if (t.block != null && !t.eventBlock) {
+            // if (t.wall.getComponent(wallGate).gateHasEvent != -1) {
+            //     t.wall.getComponent(wallGate).activeGate(t.wall.getComponent(wallGate).gateHasEvent, 0.5);
+            //     t.wall.getComponent(wallGate).gateHasEvent = -1;
+            //     log("run")
+            // }
             t.addMoreDataInMAp()
             t.ADDBBT(false);
         }
@@ -144,11 +165,21 @@ export class ControlGame extends Component {
     }
 
 
+    checkEndMove() {
+        let t = this;
+
+    }
+
+
+
+
+
+
     // anim drop drae block by touch
     ADDBBT(isDrop: boolean) {
         let t = this;
         tween(t.block)
-            .by(0.05, { worldPosition: new Vec3(0, isDrop ? 3 : -3, 0) })
+            .by(0.005, { worldPosition: new Vec3(0, isDrop ? 3 : -3, 0) })
             .call(() => {
                 if (!isDrop) {
                     t.block.setPosition(t.posCorrect);
@@ -156,9 +187,7 @@ export class ControlGame extends Component {
                 t.block.getChildByName("around").active = isDrop;
                 t.eventBlock = false;
             })
-            .delay(0.1)
-            .call(() => {
-            })
+
             .start();
     }
 
@@ -199,9 +228,11 @@ export class ControlGame extends Component {
                         return false;
                     }
                     if (DataManager.instance.mapGame[c][r] == t.block.getComponent(block).typeColor) {
-                        checkTwo++
+                        checkTwo++;
+
                     }
                     if (checkTwo == 2) {
+                        t.playSound(0)
                         t.eventDoneGate(t.block.getComponent(block).typeColor);
                         t.wall.getComponent(wallGate).activeGate(DataManager.instance.mapGame[c][r] - 2, 0.5, (typeBlock.length * typeBlock[i].length))
                         return false;
@@ -213,6 +244,13 @@ export class ControlGame extends Component {
             }
         }
         return true
+    }
+
+
+    checkCaseSpecial(c: number, r: number, typeC: number) {
+        let t = this;
+        log(c, r, typeC)
+        return DataManager.instance.xzSpecial[typeC][0].col === c && DataManager.instance.xzSpecial[typeC][0].row === r || DataManager.instance.xzSpecial[typeC][1].col === c && DataManager.instance.xzSpecial[typeC][1].row === r
     }
 
     addMoreDataInMAp(isAdd: boolean = true) {
@@ -230,7 +268,8 @@ export class ControlGame extends Component {
         }
     }
 
-    eventDoneGate(n: number, countCell: number = 4) {
+
+    eventDoneGateS(n: number, x: number, z: number) {
         let t = this;
         let startPos = t.block.getWorldPosition(new Vec3());
         let forward = t.wall.getComponent(wallGate).getForwarOfGateById(n - 2);
@@ -242,7 +281,32 @@ export class ControlGame extends Component {
                 t.block.destroy();
                 t.block = null;
                 DataManager.instance.countDone++;
-                if (DataManager.instance.countDone == 3) {
+                if (DataManager.instance.countDone == 30) {
+                    t.enventEndGame()
+                } else {
+                    t.eventBlock = false;
+                }
+            })
+            .start();
+    }
+
+
+    eventDoneGate(n: number, countCell: number = 4) {
+        let t = this;
+
+
+        let startPos = t.block.getWorldPosition(new Vec3());
+        let forward = t.wall.getComponent(wallGate).getForwarOfGateById(n - 2);
+        let targetPos = startPos.add(forward.multiplyScalar(-2));
+        t.eventBlock = true;
+
+        tween(t.block)
+            .to(0.25, { worldPosition: new Vec3(targetPos.x, -8.5, targetPos.z) })
+            .call(() => {
+                t.block.destroy();
+                t.block = null;
+                DataManager.instance.countDone++;
+                if (DataManager.instance.countDone == 30) {
                     t.enventEndGame()
                 } else {
                     t.eventBlock = false;
@@ -260,6 +324,10 @@ export class ControlGame extends Component {
 
 
 
+    playSound(index: number) {
+        let t = this;
+        t.node.getComponent(AudioSource).playOneShot(t.sound[index], 1)
+    }
 
 
     update(deltaTime: number) {

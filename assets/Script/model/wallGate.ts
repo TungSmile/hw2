@@ -1,4 +1,6 @@
-import { _decorator, Component, instantiate, log, Material, MeshRenderer, Node, Prefab, RigidBody, tween, Vec3 } from 'cc';
+import { _decorator, BoxCollider, Component, instantiate, ITriggerEvent, log, Material, MeshRenderer, Node, Prefab, RigidBody, tween, Vec3 } from 'cc';
+import { block } from './block';
+import { DataManager } from '../data/DataManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('wallGate')
@@ -12,6 +14,8 @@ export class wallGate extends Component {
 
     @property({ type: Prefab })
     dropBlock: Node = null;
+
+    gateHasEvent = -1;
 
 
     activeGate(idGate: number, timeAnim: number = 0, numBlock: number = 4) {
@@ -56,8 +60,29 @@ export class wallGate extends Component {
         return t.Gates[idGate]
     }
     start() {
-
+        // let t = this;
+        // t.Gates.forEach(gate => {
+        //     let check = gate?.getChildByName("check");
+        //     if (check) {
+        //         check.getComponent(BoxCollider).on('onTriggerEnter', this.var, this); 
+        //         log("2")
+        //     }
+        // });
     }
+
+
+    var(event: ITriggerEvent) {
+        let other = event.otherCollider.node;
+        if (other && other?.getComponent(block)) {
+            if (DataManager.instance.codeColor[other.getComponent(block).typeColor - 2] == event.selfCollider.node.name) {
+                this.gateHasEvent = other.getComponent(block).typeColor - 2;
+            }
+        }
+    }
+
+
+
+
 
     update(deltaTime: number) {
 

@@ -27,5 +27,24 @@ export class DataManager extends Component {
     //r 12 c 8
     shades = [this.squader1, this.squader2, this.squader3];
 
+    codeColor = ["blue", "green", "orange", "pink", "red", "yellow"]
+
+    // smell code
+    xzSpecial = [
+        [{ col: 11, row: 7 }, { col: 9, row: 7 }],//blue
+        [{ col: 5, row: 7 }, { col: 5, row: 5 }],//gree
+        [{ col: 1, row: 7 }, { col: 1, row: 7 }],//ora
+        [{ col: 1, row: 1 }, { col: 1, row: 1 }],//pi
+        [{ col: 11, row: 1 }, { col: 9, row: 1 }], //re
+        [{ col: 5, row: 1 }, { col: 5, row: 1 }],//ye
+    ]
+    posSpecial = [
+        [{ col: 12, row: 7 }, { col: 10, row: 7 }],//blue
+        [{ col: 5, row: 8 }, { col: 5, row: 6 }],//gree
+        [{ col: 0, row: 7 }, { col: 0, row: 7 }],//ora
+        [{ col: 0, row: 1 }, { col: 0, row: 1 }],//pi
+        [{ col: 12, row: 1 }, { col: 10, row: 1 }], //re
+        [{ col: 5, row: 0 }, { col: 5, row: 0 }],//ye
+    ]
 }
 

@@ -1,0 +1,12 @@
+{
+  "splash-setting": {
+    "url": "D:\\pj\\blockJam\\test\\assets\\res\\image\\icon (1) (1).png",
+    "clearColor": {
+      "x": 0.0784313725490196,
+      "y": 0.06666666666666667,
+      "z": 0.40784313725490196,
+      "w": 1
+    },
+    "displayWatermark": false
+  }
+}

@@ -39,7 +39,6 @@ export class tableScr extends Component {
             let pos = e.getWorldPosition(new Vec3());
             let r = Math.round((pos.z - t.row[0]) / 4.1);
             let c = Math.round((pos.x - t.col[0]) / 4.1);
-
             switch (e.name) {
                 case "box":
                     tempMap[r][c] = 0;
@@ -76,6 +75,7 @@ export class tableScr extends Component {
         })
         // log("Row:" + t.numberRow, "Col:" + t.numberCol, tempMap);
         DataManager.instance.mapGame = tempMap;
+        log(tempMap)
     }
 
 
